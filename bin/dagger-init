@@ -1,0 +1,45 @@
+#!/usr/bin/env node
+
+var wrench   = require('wrench');
+var command  = require('command');
+var program  = require('commander');
+
+program
+	.option('-d, --deps', 'install dagger dependencies')
+	.parse(process.argv);
+
+// --------------------------------------------------------
+
+var cwd = process.cwd();
+
+output('Creating initial files...');
+
+wrench.copyDirRecursive(__dirname + '../template', cwd, function(err) {
+	if (err) {
+		output('\n');
+		output.error(err);
+		return process.exit(1);
+	}
+
+	output(' Done.\n');
+
+	if (program.deps) {
+		output('Installing dagger dependencies...');
+
+		command.open(cwd)
+			.exec('npm install')
+			.then(function() {
+				output(' Done.\n');
+			});
+	}
+});
+
+// --------------------------------------------------------
+
+function output(str) {
+	process.stdout.write(str);
+}
+
+output.error = function(str) {
+	process.strerr.write(str);
+};

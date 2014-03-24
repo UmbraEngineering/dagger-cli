@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+
+program
+	.usage('<name> [options]')
+	.option('--for <model>', 'specify the model the endpoint is for')
+	.parse(process.argv);
+
+console.log(program);
+

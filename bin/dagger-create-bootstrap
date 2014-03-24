@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+
+program
+	.usage('<name> [options]')
+	.parse(process.argv);
+
+console.log(program);
+

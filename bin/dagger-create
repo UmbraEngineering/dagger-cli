@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+
+program
+	.command('model <name>', 'create a new model')
+	.command('endpoint <name>', 'create a new endpoint')
+	.command('bootstrap <name>', 'create a new bootstrapping module')
+	.command('middleware <name>', 'create a new request middleware')
+	.parse(process.argv);

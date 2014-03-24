@@ -1,0 +1,9 @@
+
+var program = require('commander');
+
+program
+	.version('0.0.1')
+	.command('init', 'initialize a new dagger application')
+	.command('create <type> <name>', 'create a new resource')
+	.command('destroy <type> <name>', 'destroy and existing resource')
+	.parse(process.argv);
