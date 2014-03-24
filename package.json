@@ -12,8 +12,8 @@
   "author": "James Brumond <james@jbrumond.me> (http://www.jbrumond.me)",
   "license": "MIT",
   "dependencies": {
-    "wrench": "~1.5.4",
     "commander": "~2.1.0",
-    "command": "0.0.4"
+    "command": "0.0.4",
+    "handlebars": "~2.0.0-alpha.2"
   }
 }

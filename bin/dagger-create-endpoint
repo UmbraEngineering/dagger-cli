@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+require('../lib/utils');
+
 var program = require('commander');
 
 program
@@ -7,5 +9,32 @@ program
 	.option('--for <model>', 'specify the model the endpoint is for')
 	.parse(process.argv);
 
-console.log(program);
+var name = program.args[0];
+var model = program.for;
 
+output('Creating new endpoint "' + name + '" for model "' + model + '"...');
+
+var data = {
+	endpointName: {
+		hyphen: name,
+		camel: name.replace(/-([a-z])/g, function(match, letter) {
+			return letter.toUpperCase();
+		}),
+		class: name.replace(/(^|-)([a-z])/g, function(match, start, letter) {
+			return letter.toUpperCase();
+		})
+	},
+	modelName: {
+		hyphen: model,
+		camel: model.replace(/-([a-z])/g, function(match, letter) {
+			return letter.toUpperCase();
+		}),
+		class: model.replace(/(^|-)([a-z])/g, function(match, start, letter) {
+			return letter.toUpperCase();
+		})
+	}
+};
+
+renderFromTemplate('endpoints/template.js', 'endpoints/' + data.nameHyphen + '.js', data);
+
+output(' Done.\n');

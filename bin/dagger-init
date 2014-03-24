@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-var wrench   = require('wrench');
+require('../lib/utils');
+
+var path     = require('path');
 var command  = require('command');
 var program  = require('commander');
 
@@ -14,32 +16,31 @@ var cwd = process.cwd();
 
 output('Creating initial files...');
 
-wrench.copyDirRecursive(__dirname + '../template', cwd, function(err) {
-	if (err) {
-		output('\n');
-		output.error(err);
-		return process.exit(1);
-	}
+// Build directory structure
+mkdir(path.join(cwd, 'bootstrap'));
+mkdir(path.join(cwd, 'config'));
+mkdir(path.join(cwd, 'endpoints'));
+mkdir(path.join(cwd, 'middleware'));
+mkdir(path.join(cwd, 'models'));
 
-	output(' Done.\n');
+// Add the app.js file
+copyFromTemplate('app.js');
 
-	if (program.deps) {
-		output('Installing dagger dependencies...');
+// Add the package.json file
+copyFromTemplate('package.json');
 
-		command.open(cwd)
-			.exec('npm install')
-			.then(function() {
-				output(' Done.\n');
-			});
-	}
-});
+// Add default config file
+copyFromTemplate('config/master.js');
 
-// --------------------------------------------------------
+output(' Done.\n');
 
-function output(str) {
-	process.stdout.write(str);
+// Install dependencies with npm if needed
+if (program.deps) {
+	output('Installing dagger dependencies...');
+
+	command.open(cwd)
+		.exec('npm install')
+		.then(function() {
+			output(' Done.\n');
+		});
 }
-
-output.error = function(str) {
-	process.strerr.write(str);
-};

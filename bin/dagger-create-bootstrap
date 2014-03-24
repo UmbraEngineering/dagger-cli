@@ -1,10 +1,29 @@
 #!/usr/bin/env node
 
+require('../lib/utils');
+
 var program = require('commander');
 
 program
 	.usage('<name> [options]')
 	.parse(process.argv);
 
-console.log(program);
+var name = program.args[0];
 
+output('Creating new bootstrap "' + name + '"...');
+
+var data = {
+	name: {
+		hyphen: name,
+		camel: name.replace(/-([a-z])/g, function(match, letter) {
+			return letter.toUpperCase();
+		}),
+		class: name.replace(/(^|-)([a-z])/g, function(match, start, letter) {
+			return letter.toUpperCase();
+		})
+	}
+};
+
+renderFromTemplate('bootstrap/template.js', 'bootstrap/' + data.nameHyphen + '.js', data);
+
+output(' Done.\n');
