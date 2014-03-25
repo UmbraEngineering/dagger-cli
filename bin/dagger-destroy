@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+
+program
+	.command('model <name>', 'destroy a model')
+	.command('endpoint <name>', 'destroy a endpoint')
+	.command('bootstrap <name>', 'destroy a bootstrapping module')
+	.command('middleware <name>', 'destroy a request middleware')
+	.parse(process.argv);

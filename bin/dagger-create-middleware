@@ -24,6 +24,14 @@ var data = {
 	}
 };
 
-renderFromTemplate('middleware/template.js', 'middleware/' + data.nameHyphen + '.js', data);
+var file = 'middleware/' + data.name.hyphen + '.js';
+if (fileExists(file)) {
+	output('\n');
+	output.error('ERROR: Cannot create middleware "' + name + '"; File already exists.\n');
+	process.exit(1);
+	return;
+}
+
+renderFromTemplate('middleware/template.js', file, data);
 
 output(' Done.\n');

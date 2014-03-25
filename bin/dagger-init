@@ -39,7 +39,7 @@ if (program.deps) {
 	output('Installing dagger dependencies...');
 
 	command.open(cwd)
-		.exec('npm install')
+		.exec('npm', ['install'])
 		.then(function() {
 			output(' Done.\n');
 		});

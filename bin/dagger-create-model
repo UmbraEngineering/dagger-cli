@@ -24,6 +24,14 @@ var data = {
 	}
 };
 
-renderFromTemplate('models/template.js', 'models/' + data.nameHyphen + '.js', data);
+var file = 'models/' + data.name.hyphen + '.js';
+if (fileExists(file)) {
+	output('\n');
+	output.error('ERROR: Cannot create model "' + name + '"; File already exists.\n');
+	process.exit(1);
+	return;
+}
+
+renderFromTemplate('models/template.js', file, data);
 
 output(' Done.\n');

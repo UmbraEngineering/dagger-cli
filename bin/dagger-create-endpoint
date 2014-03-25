@@ -35,6 +35,14 @@ var data = {
 	}
 };
 
-renderFromTemplate('endpoints/template.js', 'endpoints/' + data.nameHyphen + '.js', data);
+var file = 'endpoints/' + data.endpointName.hyphen + '.js';
+if (fileExists(file)) {
+	output('\n');
+	output.error('ERROR: Cannot create endpoint "' + name + '"; File already exists.\n');
+	process.exit(1);
+	return;
+}
+
+renderFromTemplate('endpoints/template.js', file, data);
 
 output(' Done.\n');

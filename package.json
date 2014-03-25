@@ -1,9 +1,21 @@
 {
   "name": "dagger-cli",
   "version": "0.0.0",
+  "preferGlobal": true,
   "description": "Scaffolding cli tool for Dagger.js projects",
   "bin": {
-    "dagger": "bin/dagger"
+    "dagger": "bin/dagger",
+    "dagger-init": "bin/dagger-init",
+    "dagger-create": "bin/dagger-create",
+    "dagger-create-bootstrap": "bin/dagger-create-bootstrap",
+    "dagger-create-endpoint": "bin/dagger-create-endpoint",
+    "dagger-create-middleware": "bin/dagger-create-middleware",
+    "dagger-create-model": "bin/dagger-create-model",
+    "dagger-destroy": "bin/dagger-destroy",
+    "dagger-destroy-bootstrap": "bin/dagger-destroy-bootstrap",
+    "dagger-destroy-endpoint": "bin/dagger-destroy-endpoint",
+    "dagger-destroy-middleware": "bin/dagger-destroy-middleware",
+    "dagger-destroy-model": "bin/dagger-destroy-model"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,6 +26,9 @@
   "dependencies": {
     "commander": "~2.1.0",
     "command": "0.0.4",
-    "handlebars": "~2.0.0-alpha.2"
+    "handlebars": "~2.0.0-alpha.2",
+    "co-prompt": "^1.0.0",
+    "tabtab": "0.0.2",
+    "exists-patch": "0.0.0"
   }
 }

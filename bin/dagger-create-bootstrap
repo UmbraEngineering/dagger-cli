@@ -24,6 +24,14 @@ var data = {
 	}
 };
 
-renderFromTemplate('bootstrap/template.js', 'bootstrap/' + data.nameHyphen + '.js', data);
+var file = 'bootstrap/' + data.name.hyphen + '.js';
+if (fileExists(file)) {
+	output('\n');
+	output.error('ERROR: Cannot create bootstrapping module "' + name + '"; File already exists.\n');
+	process.exit(1);
+	return;
+}
+
+renderFromTemplate('bootstrap/template.js', file, data);
 
 output(' Done.\n');

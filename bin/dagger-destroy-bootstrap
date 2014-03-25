@@ -1,0 +1,43 @@
+#!/usr/bin/env node
+
+require('../lib/utils');
+
+var prompt   = require('co-prompt');
+var program  = require('commander');
+
+program
+	.usage('<name> [options]')
+	.option('-f, --force', 'Do not confirm before taking action')
+	.parse(process.argv);
+
+var name = program.args[0];
+
+if (program.force) {
+	return doDelete();
+}
+
+prompt.confirm('Delete bootstrapping module "' + name + '"? [N/y] ')(function(err, ok) {
+	process.stdin.pause();
+	if (err) {
+		throw err;
+	}
+	if (ok) {
+		doDelete();
+	}
+});
+
+function doDelete() {
+	output('Destroying bootstrap "' + name + '"...');
+
+	var file = 'bootstrap/' + name + '.js';
+	if (! fileExists(file)) {
+		output('\n');
+		output.error('ERROR: Cannot destroy bootstrapping module "' + name + '"; File does not exist.\n');
+		process.exit(1);
+		return;
+	}
+
+	deleteFile(file);
+
+	output(' Done.\n');
+}
