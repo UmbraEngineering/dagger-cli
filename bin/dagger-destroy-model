@@ -29,7 +29,7 @@ prompt.confirm('Delete model "' + name + '"? [N/y] ')(function(err, ok) {
 function doDelete() {
 	output('Destroying model "' + name + '"...');
 
-	var file = 'model/' + name + '.js';
+	var file = 'models/' + name + '.js';
 	if (! fileExists(file)) {
 		output('\n');
 		output.error('ERROR: Cannot destroy model "' + name + '"; File does not exist.\n');

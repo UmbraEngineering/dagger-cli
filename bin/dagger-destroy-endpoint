@@ -29,7 +29,7 @@ prompt.confirm('Delete endpoint "' + name + '"? [N/y] ')(function(err, ok) {
 function doDelete() {
 	output('Destroying endpoint "' + name + '"...');
 
-	var file = 'endpoint/' + name + '.js';
+	var file = 'endpoints/' + name + '.js';
 	if (! fileExists(file)) {
 		output('\n');
 		output.error('ERROR: Cannot destroy endpoint "' + name + '"; File does not exist.\n');

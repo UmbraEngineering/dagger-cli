@@ -1,34 +1,6 @@
 #!/usr/bin/env node
 
-var tabtab = require('tabtab');
-
-// Handle bash completion
-if (process.argv[2] === 'completion') {
-	// Patch for path.exists because tabtab has not updated
-	require('exists-patch').patchBackward();
-
-	return tabtab.complete('dagger', function(err, data) {
-		if (err || ! data) {
-			return;
-		}
-
-		if (/^--\w?/.test(data.last)) {
-			return tabtab.log(['help', 'version'], data, '--');
-		}
-
-		if (/^-\w?/.test(data.last)) {
-			return tabtab.log(['h', 'V'], data, '-');
-		}
-
-		if (data.words === 2) {
-			// 
-		}
-
-		tabtab.log(['init', 'create', 'destroy', 'completion'], data);
-	});
-}
-
-// -------------------------------------------------------------
+require('./completion');
 
 var program = require('commander');
 
