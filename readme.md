@@ -6,7 +6,13 @@
 ### Install
 
 ```bash
-$ npm instal dagger-cli
+$ npm instal -g dagger-cli
+```
+
+##### Install bash completion
+
+```bash
+$ dagger completion install
 ```
 
 
