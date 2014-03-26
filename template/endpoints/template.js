@@ -26,9 +26,7 @@ var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 				function(docs) {
 					req.send(200, docs.map({{ modelName.class }}.serialize));
 				},
-				function(err) {
-					(new HttpError(err)).send(req);
-				}
+				HttpError.catch(req)
 			);
 	},
 
@@ -45,14 +43,7 @@ var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 
 					req.send(200, {{ modelName.class }}.serialize(doc));
 				},
-				function(err) {
-					// This means that the param ID was not a valid ObjectId
-					if (err.name === 'CastError' || err.path === '_id') {
-						return (new HttpError(404, 'Document not found')).send(req);
-					}
-
-					(new HttpError(err)).send(req);
-				}
+				HttpError.catch(req)
 			);
 	},
 
@@ -65,9 +56,7 @@ var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 				function(doc) {
 					req.send(200, {{ modelName.class }}.serialize(doc));
 				},
-				function(err) {
-					(new HttpError(err)).send(req);
-				}
+				HttpError.catch(req)
 			);
 	},
 
@@ -75,7 +64,44 @@ var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 	// PUT/PATCH /{{ endpointName.hyphen }}
 	// 
 	"put|patch": function(req) {
-		// 
+		var objs = req.body;
+
+		if (! Array.isArray(objs)) {
+			return (new HttpError(400, 'Expected an array of objects to update in the body')).send(req);
+		}
+
+		// Get only the doc ids
+		var ids = objs.map(function(obj) {
+			return obj._id;
+		});
+
+		// Fetch all of the needed docs
+		{{ modelName.class }}.find({ _id: {$in: ids} }).exec()
+			.then(function(docs) {
+				if (! docs || docs.length < objs.length) {
+					throw new HttpError(404, 'Some documents could not be found');
+				}
+
+				// 
+				// NOTE: Authorization should occur here
+				// 
+
+				objs.forEach(function(obj) {
+					var doc = docs.find(function(doc) {
+						return doc.id === obj._id;
+					});
+
+					doc.set(obj);
+				});
+
+				return when.saved(docs);
+			})
+			.then(
+				function(docs) {
+					req.send(200, docs.map({{ modelName.class }}.serialize));
+				},
+				HttpError.catch(req)
+			);
 	},
 
 	// 
@@ -85,7 +111,7 @@ var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 		{{ modelName.class }}.findById(req.params.id).exec()
 			.then(function(doc) {
 				if (! doc) {
-					return (new HttpError(404, 'Document not found')).send(req);
+					throw new HttpError(404, 'Document not found');
 				}
 
 				// 
@@ -97,11 +123,9 @@ var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 			})
 			.then(
 				function(doc) {
-					req.send(200, doc);
+					req.send(200, {{ modelName.class }}.serialize(doc));
 				},
-				function(err) {
-					(new HttpError(err)).send(req);
-				}
+				HttpError.catch(req)
 			);
 	},
 
