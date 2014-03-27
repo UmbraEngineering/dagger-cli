@@ -25,7 +25,7 @@ var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 			.then(
 				function(docs) {
 					// 
-					// NOTE: Authorization should occur here
+					// NOTE: Authorization should be done here
 					// 
 
 					req.send(200, docs.map({{ modelName.class }}.serialize));
@@ -46,7 +46,7 @@ var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 					}
 
 					// 
-					// NOTE: Authorization should occur here
+					// NOTE: Authorization should be done here
 					// 
 
 					req.send(200, {{ modelName.class }}.serialize(doc));
@@ -60,7 +60,7 @@ var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 	// 
 	"post": function(req) {
 		// 
-		// NOTE: Authorization should occur here
+		// NOTE: Authorization should be done here
 		// 
 
 		{{ modelName.class }}.create(req.body)
@@ -95,7 +95,7 @@ var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 				}
 
 				// 
-				// NOTE: Authorization should occur here
+				// NOTE: Authorization should be done here
 				// 
 
 				objs.forEach(function(obj) {
@@ -127,7 +127,7 @@ var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 				}
 
 				// 
-				// NOTE: Any kind of authorization should be handled here
+				// NOTE: Authorization should be done here
 				// 
 
 				doc.set(req.body);
@@ -145,14 +145,71 @@ var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 	// DELETE /{{ endpointName.hyphen }}
 	// 
 	"delete": function(req) {
-		// 
+		var ids = req.body;
+		var ignoreMissing = req.query.ignoreMissing;
+
+		if (! Array.isArray(ids)) {
+			return (new HttpError(400, 'Expected an array of ObjectIds')).send(req);
+		}
+
+		{{ modelName.class }}.find({ _id: {$in: ids} }).exec()
+			.then(function(docs) {
+				if (! ignoreMissing && (! docs || docs.length < ids.length)) {
+					throw new HttpError(404, 'Some documents could not be found');
+				}
+
+				if (! docs) {
+					return when.resolve();
+				}
+
+				// 
+				// NOTE: Authorization should be done here
+				// 
+
+				docs.forEach(function(doc) {
+					doc.remove();
+				});
+
+				return when.resolve();
+			})
+			.then(
+				function() {
+					req.send(200);
+				},
+				HttpError.catch(req)
+			);
 	},
 
 	// 
 	// DELETE /{{ endpointName.hyphen }}/:id
 	// 
 	"delete /:id": function(req) {
-		// 
+		var ignoreMissing = req.query.ignoreMissing;
+
+		{{ modelName.class }}.findById(req.params.id).exec()
+			.then(function(doc) {
+				if (! doc) {
+					if (ignoreMissing) {
+						return when.resolve();
+					} else {
+						throw new HttpError(404, 'Document not found');
+					}
+				}
+
+				// 
+				// NOTE: Authorization should be done here
+				// 
+
+				doc.remove();
+
+				return when.resolve();
+			})
+			.then(
+				function() {
+					req.send(200);
+				},
+				HttpError.catch(req)
+			);
 	}
 
 });
