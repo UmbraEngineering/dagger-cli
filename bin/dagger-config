@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+
+program
+	.option('-g, --global', 'make this config setting global instead of app specific')
+	.command('template <template>', 'modify a template')
+	.parse(process.argv);

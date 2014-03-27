@@ -6,11 +6,16 @@ var program = require('commander');
 
 program
 	.usage('<name> [options]')
+	.option('-g, --use-global', 'use the global template')
+	.option('-l, --use-local', 'use the local template')
+	.option('-t, --template <template>', 'what template should be used', 'base')
 	.parse(process.argv);
 
 var name = program.args[0];
+var source = program.useLocal ? 'local' : (program.useGlobal ? 'global' : null);
+var template = program.template || 'base';
 
-output('Creating new bootstrap "' + name + '"...');
+output('Creating new bootstrapping module "' + name + '"...');
 
 var data = {
 	name: {
@@ -32,6 +37,6 @@ if (fileExists(file)) {
 	return;
 }
 
-renderFromTemplate('bootstrap/template.js', file, data);
+renderFile(templateFile('bootstrap/' + template + '.js', source), appFile(file), data);
 
 output(' Done.\n');

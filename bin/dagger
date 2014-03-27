@@ -9,4 +9,5 @@ program
 	.command('init', 'initialize a new dagger application')
 	.command('create <type> <name>', 'create a new resource')
 	.command('destroy <type> <name>', 'destroy and existing resource')
+	.command('config', 'change configuration settings for the dagger-cli tool')
 	.parse(process.argv);

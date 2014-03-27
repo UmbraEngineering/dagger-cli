@@ -24,6 +24,10 @@ var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 		{{ modelName.class }}.findByQuery(req.query)
 			.then(
 				function(docs) {
+					// 
+					// NOTE: Authorization should occur here
+					// 
+
 					req.send(200, docs.map({{ modelName.class }}.serialize));
 				},
 				HttpError.catch(req)
@@ -41,6 +45,10 @@ var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 						return (new HttpError(404, 'Document not found')).send(req);
 					}
 
+					// 
+					// NOTE: Authorization should occur here
+					// 
+
 					req.send(200, {{ modelName.class }}.serialize(doc));
 				},
 				HttpError.catch(req)
@@ -51,6 +59,10 @@ var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 	// POST /{{ endpointName.hyphen }}
 	// 
 	"post": function(req) {
+		// 
+		// NOTE: Authorization should occur here
+		// 
+
 		{{ modelName.class }}.create(req.body)
 			.then(
 				function(doc) {

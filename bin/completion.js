@@ -13,6 +13,17 @@ if (process.argv[2] === 'completion') {
 			return;
 		}
 
+		// Sub-command flags/options
+		if (data.words >= 2) {
+			switch (data.line.split(' ')[1]) {
+				case 'config':
+					if (options(data, ['g', 'l', 'e', 'n', 'f'], ['global', 'local', 'editor', 'name', 'from'])) {
+						return;
+					}
+				break;
+			}
+		}
+
 		// Top-level flags/options
 		if (options(data, ['h', 'V'], ['help', 'version'])) {
 			return;
@@ -20,7 +31,7 @@ if (process.argv[2] === 'completion') {
 
 		// Sub-commands
 		if (data.words === 1) {
-			return tabtab.log(['init', 'create', 'destroy', 'completion'], data);
+			return tabtab.log(['init', 'create', 'destroy', 'completion', 'config'], data);
 		}
 
 		// Sub-sub-commands
@@ -40,6 +51,10 @@ if (process.argv[2] === 'completion') {
 
 				case 'completion':
 					return tabtab.log([ 'install', 'uninstall' ], data);
+				break;
+
+				case 'config':
+					return tabtab.log([ 'template' ], data);
 				break;
 			}
 		}

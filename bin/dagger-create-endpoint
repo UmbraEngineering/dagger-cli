@@ -5,14 +5,18 @@ require('../lib/utils');
 var program = require('commander');
 
 program
-	.usage('<name> [options]')
-	.option('--for <model>', 'specify the model the endpoint is for')
+	.usage('<name> for <model> [options]')
+	.option('-g, --use-global', 'use the global template')
+	.option('-l, --use-local', 'use the local template')
+	.option('-t, --template <template>', 'what template should be used', 'base')
 	.parse(process.argv);
 
 var name = program.args[0];
-var model = program.for;
+var model = (program.args[1] === 'for') ? program.args[2] : program.args[0];
+var source = program.useLocal ? 'local' : (program.useGlobal ? 'global' : null);
+var template = program.template || 'base';
 
-output('Creating new endpoint "' + name + '" for model "' + model + '"...');
+output('Creating new endpoint "' + name + '"...');
 
 var data = {
 	endpointName: {
@@ -43,6 +47,6 @@ if (fileExists(file)) {
 	return;
 }
 
-renderFromTemplate('endpoints/template.js', file, data);
+renderFile(templateFile('endpoint/' + template + '.js', source), appFile(file), data);
 
 output(' Done.\n');

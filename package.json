@@ -15,7 +15,9 @@
     "dagger-destroy-bootstrap": "bin/dagger-destroy-bootstrap",
     "dagger-destroy-endpoint": "bin/dagger-destroy-endpoint",
     "dagger-destroy-middleware": "bin/dagger-destroy-middleware",
-    "dagger-destroy-model": "bin/dagger-destroy-model"
+    "dagger-destroy-model": "bin/dagger-destroy-model",
+    "dagger-config": "bin/dagger-config",
+    "dagger-config-template": "bin/dagger-config-template"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+
+require('../lib/utils');
+
+var program = require('commander');
+
+program
+	.usage('<template> [options]')
+	.option('-l, --edit-local', 'make this config update local')
+	.option('-g, --edit-global', 'make this config update global')
+	.option('-e, --editor <editor>', 'the editor used to modify the file')
+	.option('-n, --name <name>', 'the template name', 'base')
+	.option('-f, --from <from>', 'the template to copy from if the template does not exist', 'base')
+	.parse(process.argv);
+
+var file;
+var template = program.args[0];
+var isLocal = program.editLocal || (! program.editGlobal);
+var name = (program.name || 'base') + '.js';
+var from = (program.from || 'base') + '.js';
+var validTemplates = ['bootstrap', 'endpoint', 'middleware', 'model', 'config'];
+
+if (validTemplates.indexOf(template) < 0) {
+	output.error('ERROR: Template must be one of the following types: "' + validTemplates.join('", "') + '".\n');
+	return;
+}
+
+// Handle local template editing
+if (isLocal) {
+	file = templateFile(template + '/' + name, 'local');
+	if (! fileExists(file)) {
+		from = templateFile(template + '/' + from);
+		createLocalTemplate(from, template + '/' + name);
+	}
+}
+
+// Handle editting the global templates
+else {
+	file = templateFile(template + '/' + name, 'global');
+	if (! fileExists(file)) {
+		from = templateFile(template + '/' + from, 'global');
+		copyFile(from, file);
+	}
+}
+
+// Open the file for editting
+editFile(file, program.editor);

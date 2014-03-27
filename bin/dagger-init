@@ -30,7 +30,7 @@ copyFromTemplate('app.js');
 copyFromTemplate('package.json');
 
 // Add default config file
-copyFromTemplate('config/master.js');
+copyFromTemplate('config/base.js', 'config/master.js');
 
 output(' Done.\n');
 

@@ -6,6 +6,52 @@ var program = require('commander');
 
 program
 	.usage('<name> [options]')
+	.option('-g, --use-global', 'use the global template')
+	.option('-l, --use-local', 'use the local template')
+	.option('-t, --template <template>', 'what template should be used', 'base')
+	.parse(process.argv);
+
+var name = program.args[0];
+var source = program.useLocal ? 'local' : (program.useGlobal ? 'global' : null);
+var template = program.template || 'base';
+
+output('Creating new model "' + name + '"...');
+
+var data = {
+	name: {
+		hyphen: name,
+		camel: name.replace(/-([a-z])/g, function(match, letter) {
+			return letter.toUpperCase();
+		}),
+		class: name.replace(/(^|-)([a-z])/g, function(match, start, letter) {
+			return letter.toUpperCase();
+		})
+	}
+};
+
+var file = 'model/' + data.name.hyphen + '.js';
+if (fileExists(file)) {
+	output('\n');
+	output.error('ERROR: Cannot create model "' + name + '"; File already exists.\n');
+	process.exit(1);
+	return;
+}
+
+renderFile(templateFile('models/' + template + '.js', source), appFile(file), data);
+
+output(' Done.\n');
+
+
+
+
+#!/usr/bin/env node
+
+require('../lib/utils');
+
+var program = require('commander');
+
+program
+	.usage('<name> [options]')
 	.parse(process.argv);
 
 var name = program.args[0];
@@ -32,6 +78,6 @@ if (fileExists(file)) {
 	return;
 }
 
-renderFromTemplate('models/template.js', file, data);
+renderFromTemplate('model/template.js', file, data);
 
 output(' Done.\n');
