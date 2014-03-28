@@ -8,13 +8,13 @@ program
 	.usage('<name> for <model> [options]')
 	.option('-g, --use-global', 'use the global template')
 	.option('-l, --use-local', 'use the local template')
-	.option('-t, --template <template>', 'what template should be used', 'base')
+	.option('-t, --template <template>', 'what template should be used')
 	.parse(process.argv);
 
 var name = program.args[0];
-var model = (program.args[1] === 'for') ? program.args[2] : program.args[0];
+var model = (program.args[1] === 'for') ? program.args[2] : '';
 var source = program.useLocal ? 'local' : (program.useGlobal ? 'global' : null);
-var template = program.template || 'base';
+var template = program.template || (model ? 'model' : 'base');
 
 output('Creating new endpoint "' + name + '"...');
 
