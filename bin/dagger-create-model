@@ -9,6 +9,7 @@ program
 	.option('-g, --use-global', 'use the global template')
 	.option('-l, --use-local', 'use the local template')
 	.option('-t, --template <template>', 'what template should be used', 'base')
+	.option('-f, --fields <fields>', 'comma delimited list of fields to add to the model')
 	.parse(process.argv);
 
 var name = program.args[0];
@@ -26,7 +27,20 @@ var data = {
 		class: name.replace(/(^|-)([a-z])/g, function(match, start, letter) {
 			return letter.toUpperCase();
 		})
-	}
+	},
+	fields: ((program.fields && program.fields.split(',')) || [ ]).map(function(field) {
+		field = field.split(':');
+		if (field.length === 1) {
+			return {
+				name: field[0],
+				type: 'String'
+			};
+		}
+		return {
+			name: field[0],
+			type: field[1]
+		};
+	})
 };
 
 var file = 'models/' + data.name.hyphen + '.js';

@@ -8,5 +8,6 @@ var models = require('dagger.js').require('models');
 // as that is handled automatically by dagger's model module.
 // 
 var {{ name.class }}Schema = module.exports = new models.Schema({
-	field: {type: String}
+	{{#each fields }}{{ this.name }}: { type: {{ this.type }} },
+	{{/each}}
 });
