@@ -79,7 +79,8 @@ module.exports = {
 	// Config for response formatting and contents
 	// 
 	output: {
-		errorStacks: true
+		errorStacks: true,
+		schemaEndpoints: true
 	}
 
 };
