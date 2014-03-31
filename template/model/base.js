@@ -1,5 +1,8 @@
 
 var models = require('dagger.js').require('models');
+{{#if needsObjectId }}
+var ObjectId = models.types.ObjectId;
+{{/if}}
 
 // 
 // Define the {{ name.class }} schema
