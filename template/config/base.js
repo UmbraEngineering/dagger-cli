@@ -11,7 +11,8 @@ module.exports = {
 		requests: {
 			enabled: true,
 			body: true,
-			headers: true
+			headers: true,
+			sockets: true
 		}
 	},
 
@@ -36,7 +37,13 @@ module.exports = {
 		enabled: false,
 
 		// Should socket-based push listeners be allowed
-		enablePushSupport: true
+		enablePushSupport: true,
+
+		// These settings are passed directly into socket.io
+		socketIO: {
+			store: 'memory',
+			resource: '/socket.io'
+		}
 	},
 
 	// 
