@@ -10,7 +10,7 @@ module.exports = {
 		colorOutput: true,
 		requests: {
 			enabled: true,
-			body: true,
+			body: false,
 			headers: true,
 			sockets: true
 		}
@@ -37,11 +37,13 @@ module.exports = {
 		enabled: false,
 
 		// Should socket-based push listeners be allowed
-		enablePushSupport: true,
+		enablePushSupport: false,
+		
+		// The store to be used by socket.io (memory/redis)
+		store: 'memory',
 
 		// These settings are passed directly into socket.io
 		socketIO: {
-			store: 'memory',
 			resource: '/socket.io'
 		}
 	},
@@ -63,7 +65,7 @@ module.exports = {
 	// single instance, you can disable this.
 	// 
 	redis: {
-		enabled: true,
+		enabled: false,
 		url: 'redis://localhost',
 		channel: 'dagger',
 	},
@@ -76,17 +78,11 @@ module.exports = {
 	},
 
 	// 
-	// Config for the auth middleware
-	// 
-	auth: {
-		keyFile: 'jws/key.pem'
-	},
-
-	// 
 	// Config for response formatting and contents
 	// 
 	output: {
-		errorStacks: true,
+		meta: false,
+		errorStacks: false,
 		schemaEndpoints: true
 	}
 
