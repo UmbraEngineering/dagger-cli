@@ -1,7 +1,6 @@
 
-var dagger     = require('dagger.js');
-var Endpoint   = dagger.require('endpoint');
-var HttpError  = dagger.require('http-meta').HttpError;
+var Endpoint   = require('dagger.js/lib/endpoint');
+var HttpError  = require('dagger.js/lib/http-meta').HttpError;
 
 var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 

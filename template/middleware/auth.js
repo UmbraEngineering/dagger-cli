@@ -1,4 +1,12 @@
 
+// 
+// 
+// TODO
+// 
+// Not finished .... Not even close ....
+// 
+// 
+
 var fs      = require('fs');
 var jws     = require('jsjws');
 var dagger  = require('dagger.js');

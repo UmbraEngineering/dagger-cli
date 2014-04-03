@@ -1,5 +1,5 @@
 
-var logger = require('dagger.js').require('logger');
+var logger = require('dagger.js/lib/logger');
 
 module.exports = function(opts) {
 	process.on('uncaughtException', function(err) {

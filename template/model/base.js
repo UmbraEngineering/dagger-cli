@@ -1,5 +1,5 @@
 
-var models = require('dagger.js').require('models');
+var models = require('dagger.js/lib/models');
 {{#if needsObjectId }}
 var ObjectId = models.types.ObjectId;
 {{/if}}
