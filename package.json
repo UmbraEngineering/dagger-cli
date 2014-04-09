@@ -1,6 +1,6 @@
 {
   "name": "dagger-cli",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "preferGlobal": true,
   "description": "Scaffolding cli tool for Dagger.js projects",
   "bin": {
