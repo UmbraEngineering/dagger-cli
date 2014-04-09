@@ -11,6 +11,6 @@ var ObjectId = models.types.ObjectId;
 // as that is handled automatically by dagger's model module.
 // 
 var {{ name.class }}Schema = module.exports = new models.Schema({
-	{{#each fields }}{{ this.name }}: { type: {{ this.type }} },
-	{{/each}}
+	{{#each fields }}{{ this.name }}: { type: {{ this.type }} }{{#unless @last}},
+	{{/unless}}{{/each}}
 });
