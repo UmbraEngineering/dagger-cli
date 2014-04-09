@@ -9,6 +9,7 @@ program
 	.option('-g, --use-global', 'use the global template')
 	.option('-l, --use-local', 'use the local template')
 	.option('-t, --template <template>', 'what template should be used')
+	.option('-m, --methods <methods>', 'Which HTTP methods should we create endpoints for')
 	.parse(process.argv);
 
 var name = program.args[0];
@@ -36,7 +37,8 @@ var data = {
 		class: model.replace(/(^|-)([a-z])/g, function(match, start, letter) {
 			return letter.toUpperCase();
 		})
-	}
+	},
+	methods: (program.methods || 'get,post,put|patch,delete').split(',')
 };
 
 var file = 'endpoints/' + data.endpointName.hyphen + '.js';
