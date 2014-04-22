@@ -69,7 +69,7 @@ var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 		{{ modelName.class }}.create(req.body)
 			.then(
 				function(doc) {
-					req.respond(200, {{ modelName.class }}.serialize(doc));
+					req.respond(201, {{ modelName.class }}.serialize(doc));
 				},
 				HttpError.catch(req)
 			);
