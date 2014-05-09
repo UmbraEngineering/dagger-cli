@@ -3,6 +3,7 @@ var models     = require('dagger.js/lib/models');
 var Endpoint   = require('dagger.js/lib/endpoint');
 var HttpError  = require('dagger.js/lib/http-meta').HttpError;
 var conf       = require('dagger.js/lib/conf');
+var when       = require('dagger.js/node_modules/when');
 
 var {{ modelName.class }} = models.require('{{ modelName.hyphen }}').model;
 
