@@ -42,7 +42,12 @@ var {{ endpointName.class }}Endpoint = module.exports = new Endpoint({
 	// GET /{{ endpointName.hyphen }}/:id
 	// 
 	"get /:id": function(req) {
-		{{ modelName.class }}.findById(req.params.id).exec()
+		var query = {{ modelName.class }}.findById(req.params.id);
+		if (req.query.populate) {
+			query.populate(req.query.populate);
+		}
+
+		query.exec()
 			.then(
 				function(doc) {
 					if (! doc) {
