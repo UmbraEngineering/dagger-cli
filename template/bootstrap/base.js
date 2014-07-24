@@ -1,5 +1,5 @@
 
-module.exports = function() {
+exports = module.exports = function() {
 	// 
 	// Do your bootstrapping here
 	// 
